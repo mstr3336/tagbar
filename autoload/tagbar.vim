@@ -3705,6 +3705,12 @@ function! s:ExecuteCtags(ctags_cmd) abort
         set noshellslash
     endif
 
+    if executable('bash')
+        let shell_save = &shell
+        let shellcmdflag_save = &shellcmdflag
+        set shell=bash
+        set shellcmdflag=-c
+    endif
     if &shell =~ 'cmd\.exe'
         let shellxquote_save = &shellxquote
         set shellxquote=\"
@@ -3723,6 +3729,8 @@ function! s:ExecuteCtags(ctags_cmd) abort
     if &shell =~ 'cmd\.exe'
         let &shellxquote  = shellxquote_save
         let &shellcmdflag = shellcmdflag_save
+        unlet shellxquote_save
+        unlet shellcmdflag_save
     endif
 
     if exists('+shellslash')
@@ -3731,6 +3739,10 @@ function! s:ExecuteCtags(ctags_cmd) abort
 
     if exists('shell_save')
         let &shell = shell_save
+    endif
+
+    if exists('shellcmdflag_save')
+        let &shellcmdflag = shellcmdflag_save
     endif
 
     return ctags_output
