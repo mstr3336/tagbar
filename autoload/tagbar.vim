@@ -3705,7 +3705,7 @@ function! s:ExecuteCtags(ctags_cmd) abort
         set noshellslash
     endif
 
-    if executable('bash')
+    if executable('bash') && has('nvim')
         let shell_save = &shell
         let shellcmdflag_save = &shellcmdflag
         set shell=bash
